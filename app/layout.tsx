@@ -1,6 +1,10 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
+import { ThemeProvider } from '@/components/theme-provider';
+import Header from '@/components/header';
+import { ClerkProvider } from '@clerk/nextjs';
+import { dark } from '@clerk/themes';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -15,18 +19,27 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang='en'>
-      {/* Header */}
-      <body className={`${inter.className}`}>
-        <main className='min-h-screen'>{children}</main>
+    <ClerkProvider appearance={{ baseTheme: dark }}>
+      <html lang='en' suppressHydrationWarning>
+        <body className={`${inter.className}`}>
+          <ThemeProvider
+            attribute={'class'}
+            defaultTheme='dark'
+            enableSystem
+            disableTransitionOnChange>
+            {/* Header */}
+            <Header />
+            <main className='min-h-screen'>{children}</main>
 
-        {/* Footer */}
-        <footer className='bg-muted/50 py-12'>
-          <div className='container mx-auto px-4 text-center text-gray-200'>
-            Copyright &copy; 2025. Santosh Gurung
-          </div>
-        </footer>
-      </body>
-    </html>
+            {/* Footer */}
+            <footer className='bg-muted/50 py-12'>
+              <div className='container mx-auto px-4 text-center text-gray-200'>
+                Copyright &copy; 2025. Santosh Gurung
+              </div>
+            </footer>
+          </ThemeProvider>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
