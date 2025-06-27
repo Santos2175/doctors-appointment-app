@@ -1,7 +1,7 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { creditBenefits, features } from '@/lib/data';
+import { creditBenefits, features, testimonials } from '@/lib/data';
 import { ArrowRight, Check, Stethoscope } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -139,6 +139,49 @@ export default function Home() {
               </CardContent>
             </Card>
           </div>
+        </div>
+      </section>
+
+      {/* TESTIMONIALS SECTION */}
+      <section className='py-12 bg-muted/30'>
+        <div className='container mx-auto px-4'>
+          <div className='text-center mb-4'>
+            <h2 className='text-3xl md:text-4xl font-bold text-white mb-4'>
+              What Our Users Say
+            </h2>
+            <p className='text-muted-foreground text-lg max-w-2xl mx-auto'>
+              Hear from patients and doctors from our platform
+            </p>
+          </div>
+        </div>
+
+        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
+          {testimonials.map((testimonial, index) => (
+            <Card
+              key={index}
+              className='border-emerald-900/20 hover:border-emerald-800/60 transition-all duration-300'>
+              <CardContent>
+                <div className='flex items-center mb-4'>
+                  <div className='w-12 h-12 rounded-full bg-emerald-900/20 flex items-center justify-center mr-4'>
+                    <span className='text-emerald-400 font-bold'>
+                      {testimonial.initials}
+                    </span>
+                  </div>
+                  <div>
+                    <h4 className='font-semibold text-white'>
+                      {testimonial.name}
+                    </h4>
+                    <p className='text-sm text-muted-foreground'>
+                      {testimonial.role}
+                    </p>
+                  </div>
+                </div>
+                <p className='text-muted-foreground'>
+                  &quot;{testimonial.quote}&quot;
+                </p>
+              </CardContent>
+            </Card>
+          ))}
         </div>
       </section>
     </div>
