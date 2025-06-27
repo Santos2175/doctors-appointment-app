@@ -153,35 +153,71 @@ export default function Home() {
               Hear from patients and doctors from our platform
             </p>
           </div>
-        </div>
 
-        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
-          {testimonials.map((testimonial, index) => (
-            <Card
-              key={index}
-              className='border-emerald-900/20 hover:border-emerald-800/60 transition-all duration-300'>
-              <CardContent>
-                <div className='flex items-center mb-4'>
-                  <div className='w-12 h-12 rounded-full bg-emerald-900/20 flex items-center justify-center mr-4'>
-                    <span className='text-emerald-400 font-bold'>
-                      {testimonial.initials}
-                    </span>
+          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
+            {testimonials.map((testimonial, index) => (
+              <Card
+                key={index}
+                className='border-emerald-900/20 hover:border-emerald-800/60 transition-all duration-300'>
+                <CardContent>
+                  <div className='flex items-center mb-4'>
+                    <div className='w-12 h-12 rounded-full bg-emerald-900/20 flex items-center justify-center mr-4'>
+                      <span className='text-emerald-400 font-bold'>
+                        {testimonial.initials}
+                      </span>
+                    </div>
+                    <div>
+                      <h4 className='font-semibold text-white'>
+                        {testimonial.name}
+                      </h4>
+                      <p className='text-sm text-muted-foreground'>
+                        {testimonial.role}
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <h4 className='font-semibold text-white'>
-                      {testimonial.name}
-                    </h4>
-                    <p className='text-sm text-muted-foreground'>
-                      {testimonial.role}
-                    </p>
-                  </div>
-                </div>
-                <p className='text-muted-foreground'>
-                  &quot;{testimonial.quote}&quot;
+                  <p className='text-muted-foreground'>
+                    &quot;{testimonial.quote}&quot;
+                  </p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CALL_TO_ACTION SECTION*/}
+      <section className='py-20'>
+        <div className='container mx-auto px-4'>
+          <Card className='bg-gradient-to-r from-emerald-900/30 to-emerald-950/20  border-emerald-800/20'>
+            <CardContent className='p-8 md:p-12 lg:p-16 relative overflow-hidden'>
+              <div>
+                <h2 className='text-3xl md:text-4xl font-bold text-white mb-6'>
+                  Ready to take control of your healthcare?
+                </h2>
+                <p className='text-muted-foreground text-lg mb-8'>
+                  Join thousands of users who have simplified their healthcare
+                  journey with our platform. Get started today and experience
+                  healthcare the way it should be.
                 </p>
-              </CardContent>
-            </Card>
-          ))}
+
+                <div className='flex flex-col sm:flex-row gap-4'>
+                  <Button
+                    size={'lg'}
+                    asChild
+                    className='bg-emerald-600 text-white hover:bg-emerald-700'>
+                    <Link href={'/sign-up'}>Sign Up Now</Link>
+                  </Button>
+                  <Button
+                    size={'lg'}
+                    variant={'outline'}
+                    asChild
+                    className='border-emerald-700/30 hover:bg-muted/80'>
+                    <Link href={'/pricing'}>View Pricing</Link>
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </section>
     </div>
