@@ -1,5 +1,5 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -119,4 +119,12 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+@utility gradient {
+  @apply bg-gradient-to-b from-emerald-500 to-teal-400;
+}
+
+@utility gradient-title {
+  @apply gradient  font-bold text-transparent bg-clip-text pb-1 pr-2;
 }
