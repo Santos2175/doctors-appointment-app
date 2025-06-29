@@ -1,9 +1,16 @@
+'use server';
+
 import { db } from '@/lib/prisma';
 import { auth } from '@clerk/nextjs/server';
 import { revalidatePath } from 'next/cache';
 
+// Helper to safely get string from FormData
+const getString = (value: FormDataEntryValue | null): string => {
+  return typeof value === 'string' ? value : '';
+};
+
 // Server action to set user role
-export async function setUserRole(formData) {
+export async function setUserRole(formData: FormData) {
   const { userId } = await auth();
 
   if (!userId) {
@@ -17,7 +24,7 @@ export async function setUserRole(formData) {
 
   if (!user) throw new Error('User not found');
 
-  const role = formData.get('role');
+  const role = getString(formData.get('role'));
 
   if (!role || !['DOCTOR', 'PATIENT'].includes(role)) {
     throw new Error('Invalid role selection');
@@ -37,12 +44,12 @@ export async function setUserRole(formData) {
     }
 
     if (role === 'DOCTOR') {
-      const speciality = formData.get('speciality');
-      const experience = parseInt(formData.get('experience'), 10);
-      const crediantialUrl = formData.get('credentialUrl');
-      const description = formData.get('description');
+      const speciality = getString(formData.get('speciality'));
+      const credentialUrl = getString(formData.get('credentialUrl'));
+      const description = getString(formData.get('description'));
+      const experience = parseInt(getString(formData.get('experience')), 10);
 
-      if (!speciality || !experience || !crediantialUrl || !description) {
+      if (!speciality || !experience || !credentialUrl || !description) {
         throw new Error('All fields are required');
       }
 
@@ -54,7 +61,7 @@ export async function setUserRole(formData) {
           role: 'DOCTOR',
           speciality,
           experience,
-          crediantialUrl,
+          crediantialUrl: credentialUrl,
           description,
           verificationStatus: 'PENDING',
         },
