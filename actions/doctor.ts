@@ -124,3 +124,8 @@ export async function getDoctorAvailability() {
     throw new Error('Unknown error occured');
   }
 }
+
+// Server action to get doctor appointments
+export async function getDoctorAppointments() {
+  return [];
+}
