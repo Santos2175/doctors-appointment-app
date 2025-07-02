@@ -115,3 +115,88 @@ export async function checkAndAllocateCredits(user: UserWithTransactions) {
     return null;
   }
 }
+
+export async function deductCreditsForAppointment(
+  patientId: string,
+  doctorId: string
+) {
+  try {
+    const patient = await db.user.findUnique({
+      where: {
+        id: patientId,
+      },
+    });
+
+    const doctor = await db.user.findUnique({
+      where: {
+        id: doctorId,
+      },
+    });
+
+    if (!patient) {
+      throw new Error('Patient Not Found');
+    }
+
+    if (patient?.credits && patient.credits < APPOINTMENT_CREDIT_COST) {
+      throw new Error('Insufficient credits to book appointment');
+    }
+
+    if (!doctor) {
+      throw new Error('Doctor Not Found');
+    }
+
+    const result = await db.$transaction(async (tx) => {
+      // Create credit transaction for patient(deduction)
+      await tx.creditTransaction.create({
+        data: {
+          userId: patient.id,
+          amount: -APPOINTMENT_CREDIT_COST,
+          type: 'APPOINTMENT_DEDUCTION',
+          // description:`Credits deducted for appointment with Dr. ${doctor.name}`
+        },
+      });
+
+      // Create credit transaction for doctor (addition)
+      await tx.creditTransaction.create({
+        data: {
+          userId: doctor.id,
+          amount: APPOINTMENT_CREDIT_COST,
+          type: 'APPOINTMENT_DEDUCTION',
+        },
+      });
+
+      // Update patient's credit balance(deuction)
+      const updatedPatient = await tx.user.update({
+        where: {
+          id: patient.id,
+        },
+        data: {
+          credits: {
+            decrement: APPOINTMENT_CREDIT_COST,
+          },
+        },
+      });
+
+      // Update doctor's credit balance (increment)
+      await tx.user.update({
+        where: {
+          id: doctor.id,
+        },
+        data: {
+          credits: {
+            increment: APPOINTMENT_CREDIT_COST,
+          },
+        },
+      });
+
+      return updatedPatient;
+    });
+
+    return { success: true, user: result };
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      return { success: false, error: error.message };
+    }
+    throw new Error('Unknown error occured');
+  }
+}
