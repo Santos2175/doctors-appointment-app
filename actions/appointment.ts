@@ -10,14 +10,14 @@ import { Auth } from '@vonage/auth';
 import { Vonage } from '@vonage/server-sdk';
 import { MediaMode } from '@vonage/video';
 
-interface TimeSlot {
+export interface TimeSlot {
   startTime: string;
   endTime: string;
   formatted: string;
   day: string;
 }
 
-interface DaySlot {
+export interface DaySlot {
   date: string;
   displayDate: string;
   slots: TimeSlot[];
@@ -36,7 +36,7 @@ export async function getDoctorById(doctorId: string) {
   try {
     const doctor = await db.user.findUnique({
       where: {
-        clerkUserId: doctorId,
+        id: doctorId,
         role: 'DOCTOR',
         verificationStatus: 'VERIFIED',
       },
@@ -58,7 +58,7 @@ export async function getAvailabilityTimeSlots(doctorId: string) {
   try {
     const doctor = await db.user.findUnique({
       where: {
-        clerkUserId: doctorId,
+        id: doctorId,
         role: 'DOCTOR',
         verificationStatus: 'VERIFIED',
       },
@@ -183,6 +183,7 @@ export async function getAvailabilityTimeSlots(doctorId: string) {
   }
 }
 
+// Server action to book appointment
 export async function bookAppointment(formData: FormData) {
   const { userId } = await auth();
 
@@ -217,7 +218,7 @@ export async function bookAppointment(formData: FormData) {
     // Check if doctor exists and is verified
     const doctor = await db.user.findUnique({
       where: {
-        clerkUserId: doctorId!,
+        id: doctorId!,
         role: 'DOCTOR',
         verificationStatus: 'VERIFIED',
       },

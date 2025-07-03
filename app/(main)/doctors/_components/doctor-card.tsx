@@ -50,8 +50,8 @@ const DoctorCard = ({ doctor }: DoctorCardProps) => {
 
             <Button
               asChild
-              className='w-full bg-emerald-500 hover:bg-emerald-600 mt-2'>
-              <Link href={`doctors/${doctor.speciality}/${doctor.id}`}>
+              className='w-full bg-emerald-500 hover:bg-emerald-600 mt-2 text-slate-100'>
+              <Link href={`/doctors/${doctor.speciality}/${doctor.id}`}>
                 <Calendar className='h-4 w-4 mr-2' />
                 View Profile & Book
               </Link>

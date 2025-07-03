@@ -92,8 +92,6 @@ const OnboardingPage = () => {
   const onDoctorSubmit = async (data: DoctorFormData) => {
     if (loading) return;
 
-    console.log(data);
-
     const formData = new FormData();
     formData.append('role', 'DOCTOR');
     formData.append('speciality', data.speciality);
