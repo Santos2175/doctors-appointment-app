@@ -128,7 +128,7 @@ export async function getAvailabilityTimeSlots(doctorId: string) {
         const next = addMinutes(current, 30);
 
         // Skip past slots
-        if (!isBefore(current, now)) {
+        if (isBefore(current, now)) {
           current = next;
           continue;
         }

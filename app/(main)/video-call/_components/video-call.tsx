@@ -120,7 +120,7 @@ const VideoCall = ({ sessionId, token }: VideoCallProps) => {
           if (publisherRef.current) {
             sessionRef.current?.publish(publisherRef.current, (error) => {
               if (error) {
-                console.log('Error publishing stream:', error);
+                console.error('Error publishing stream:', error);
                 toast.error('Error publishing your stream');
               } else {
                 console.log('Stream published successfully');

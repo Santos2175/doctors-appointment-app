@@ -2,8 +2,8 @@
 
 import { db } from '@/lib/prisma';
 import { auth } from '@clerk/nextjs/server';
+import { Dribbble } from 'lucide-react';
 import { revalidatePath } from 'next/cache';
-import { no, th } from 'zod/v4/locales';
 
 // Helper to safely get string from FormData
 const getString = (value: FormDataEntryValue | null): string => {
@@ -49,19 +49,58 @@ export async function setAvailabilitySlots(formData: FormData) {
     });
 
     if (existingSlots.length > 0) {
-      const slotsWithNoAppointments = existingSlots.filter(
-        (slot) => !slot.appointment
-      );
+      // const slotsWithNoAppointments = existingSlots.filter(
+      //   (slot) => !slot.appointment
+      // );
+      // const slotsWithNoAppointments: typeof existingSlots = [];
 
-      if (slotsWithNoAppointments.length > 0) {
-        await db.availability.deleteMany({
-          where: {
-            id: {
-              in: slotsWithNoAppointments.map((slot) => slot.id),
-            },
+      // for (const slot of existingSlots) {
+      //   const matchingAppointment = await db.appointment.findFirst({
+      //     where: {
+      //       doctorId: doctor.id,
+      //       startTime: slot.startTime,
+      //       endTime: slot.endTime,
+      //     },
+      //   });
+
+      //   if (!matchingAppointment) {
+      //     slotsWithNoAppointments.push(slot);
+      //   }
+      // }
+
+      // if (slotsWithNoAppointments.length > 0) {
+      //   await db.availability.deleteMany({
+      //     where: {
+      //       id: {
+      //         in: slotsWithNoAppointments.map((slot) => slot.id),
+      //       },
+      //     },
+      //   });
+      // }
+
+      // Optimized version
+      const bookedSlots = await db.appointment.findMany({
+        where: {
+          doctorId: doctor.id,
+        },
+        select: {
+          startTime: true,
+          endTime: true,
+        },
+      });
+
+      // Delete availability slots not matching any booked slots
+      await db.availability.deleteMany({
+        where: {
+          doctorId: doctor.id,
+          NOT: {
+            OR: bookedSlots.map((slot) => ({
+              startTime: slot.startTime,
+              endTime: slot.endTime,
+            })),
           },
-        });
-      }
+        },
+      });
     }
 
     // Create new availability slot
