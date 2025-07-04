@@ -6,6 +6,7 @@ import { redirect } from 'next/navigation';
 
 import React from 'react';
 import AvailabilitySettings from './_components/availability-settings';
+import DoctorAppointmentList from './_components/appointment-list';
 
 const DoctorDashboard = async () => {
   const user = await getCurrentUser();
@@ -45,7 +46,9 @@ const DoctorDashboard = async () => {
 
       <div className='md:col-span-3'>
         <TabsContent value='appointments' className='border-none p-0 '>
-          Appointments
+          <DoctorAppointmentList
+            appointments={appointmentsData.appointments || []}
+          />
         </TabsContent>
         <TabsContent value='availability' className='border-none p-0 '>
           <AvailabilitySettings slots={availabilityData.slots || []} />
