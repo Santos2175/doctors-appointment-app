@@ -180,7 +180,7 @@ const AppointmentCard = ({ appointment, userRole }: AppointmentCardProps) => {
   useEffect(() => {
     if (tokenData?.success) {
       router.push(
-        `/video-call?sesssionId?=${tokenData.videoSessionId}&token=${tokenData.token}&appointmentId=${appointment.id}`
+        `/video-call?sessionId=${tokenData.videoSessionId}&token=${tokenData.token}&appointmentId=${appointment.id}`
       );
     }
   }, [tokenData, appointment.id, router]);
