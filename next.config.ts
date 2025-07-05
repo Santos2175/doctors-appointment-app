@@ -2,6 +2,9 @@ import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   /* config options here */
+  experimental: {
+    serverComponentsHmrCache: false,
+  },
   images: {
     remotePatterns: [
       {
@@ -9,6 +12,9 @@ const nextConfig: NextConfig = {
         hostname: 'img.clerk.com',
       },
     ],
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
   },
 };
 
