@@ -229,12 +229,16 @@ doctors-appointment/
 └── types/                  # TypeScript type definitions
 ```
 
+---
+
 ## 🔧 Available Scripts
 
 - `npm run dev` - Start development server with Turbopack
 - `npm run build` - Build for production
 - `npm run start` - Start production server
 - `npm run lint` - Run ESLint
+
+---
 
 ## 🔐 Authentication & Authorization
 
@@ -246,6 +250,8 @@ The application uses Clerk for authentication with role-based access control:
 
 Protected routes are handled through Next.js middleware with automatic redirects to sign-in.
 
+---
+
 ## 💳 Credit System
 
 The platform operates on a credit-based system:
@@ -256,6 +262,8 @@ The platform operates on a credit-based system:
 - Doctors earn credits for completed consultations
 - All transactions are tracked in the database
 
+---
+
 ## 🎥 Video Consultation
 
 Video calls are powered by Vonage/TokBox:
@@ -265,6 +273,8 @@ Video calls are powered by Vonage/TokBox:
 - Audio/video controls
 - Automatic session management
 - Mobile-responsive interface
+
+---
 
 ## 🎨 UI/UX Features
 
@@ -294,4 +304,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-**Built with ❤️ for better healthcare access**
+**Built with ❤️ for better healthcare access - Santosh Gurung**
