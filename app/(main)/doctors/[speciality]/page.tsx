@@ -4,13 +4,11 @@ import PageHeader from '@/components/page-header';
 import { redirect } from 'next/navigation';
 import React from 'react';
 
-type SpecialityPageProps = {
-  params: {
-    speciality: string;
-  };
-};
-
-const SpecialityPage = async ({ params }: SpecialityPageProps) => {
+const SpecialityPage = async ({
+  params,
+}: {
+  params: Promise<{ speciality: string }>;
+}) => {
   const { speciality } = await params;
 
   if (!speciality) {

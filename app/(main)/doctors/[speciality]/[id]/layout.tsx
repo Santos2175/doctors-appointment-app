@@ -3,9 +3,9 @@ import PageHeader from '@/components/page-header';
 import { redirect } from 'next/navigation';
 import React, { ReactNode } from 'react';
 
-type Params = {
+type Params = Promise<{
   id: string;
-};
+}>;
 
 type DoctorProfileLayoutProps = {
   children: ReactNode;

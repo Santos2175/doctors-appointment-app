@@ -1,3 +1,5 @@
+'use server';
+
 import { Prisma } from '@/lib/generated/prisma';
 import { db } from '@/lib/prisma';
 import { auth } from '@clerk/nextjs/server';
@@ -18,6 +20,8 @@ const PLAN_CREDITS = {
 // Credit cost per appointment
 const APPOINTMENT_CREDIT_COST = 2;
 
+const processingUsers = new Set<string>();
+
 export async function checkAndAllocateCredits(user: UserWithTransactions) {
   try {
     if (!user) {
@@ -28,6 +32,13 @@ export async function checkAndAllocateCredits(user: UserWithTransactions) {
     if (user.role !== 'PATIENT') {
       return user;
     }
+
+    if (processingUsers.has(user.id)) {
+      return user;
+    }
+
+    // Lock this user temporarily
+    processingUsers.add(user.id);
 
     // Check if user has subscription
     const { has } = await auth();
@@ -61,7 +72,13 @@ export async function checkAndAllocateCredits(user: UserWithTransactions) {
 
     // If there is a transaction this month, if the transaction plan is same
     if (user.transactions.length > 0) {
-      const latestTransaction = user.transactions[0];
+      const latestTransaction = user.transactions
+        .slice()
+        .sort(
+          (a, b) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        )[0];
+
       const transactionMonth = format(
         new Date(latestTransaction.createdAt),
         'yyyy-MM'
@@ -109,10 +126,15 @@ export async function checkAndAllocateCredits(user: UserWithTransactions) {
     revalidatePath('/appointments');
 
     return updatedUser;
-  } catch (error: any) {
-    console.error('Failed to check subscription and credits', error.message);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error('Failed to check subscription and credits', error.message);
 
+      return null;
+    }
     return null;
+  } finally {
+    processingUsers.delete(user.id);
   }
 }
 

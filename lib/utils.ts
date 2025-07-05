@@ -15,7 +15,7 @@ export const getString = (value: FormDataEntryValue | null): string => {
 export const formatDateTime = (dateString: Date) => {
   try {
     return format(new Date(dateString), "MMMM d, yyyy 'at' h:mm a");
-  } catch (e) {
+  } catch (e: any) {
     return 'Invalid date';
   }
 };
@@ -24,7 +24,7 @@ export const formatDateTime = (dateString: Date) => {
 export const formatTime = (dateString: Date) => {
   try {
     return format(new Date(dateString), 'h:mm a');
-  } catch (e) {
+  } catch (e: any) {
     return 'Invalid time';
   }
 };

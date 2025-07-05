@@ -27,11 +27,18 @@ const Header = async () => {
         {/* LOGO */}
         <Link href='/' className='flex items-center gap-2 cursor-pointer'>
           <Image
+            src={'/logo.png'}
+            alt='logo'
+            width={200}
+            height={60}
+            className='h-10 w-auto object-contain hidden md:block'
+          />
+          <Image
             src={'/logo-single.png'}
             alt='logo'
             width={200}
             height={60}
-            className='h-10 w-auto object-contain'
+            className='h-10 w-auto object-contain md:hidden '
           />
         </Link>
 

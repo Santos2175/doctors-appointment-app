@@ -3,13 +3,11 @@ import { redirect } from 'next/navigation';
 import React from 'react';
 import DoctorProfile from './_components/doctor-profile';
 
-type DoctorProfilePageProps = {
-  params: {
-    id: string;
-  };
-};
-
-const DoctorProfilePage = async ({ params }: DoctorProfilePageProps) => {
+const DoctorProfilePage = async ({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) => {
   const { id } = await params;
 
   try {
